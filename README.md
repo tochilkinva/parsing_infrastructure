@@ -1,8 +1,10 @@
 # parsing_infrastructure
 Parsing infrastructure with Django, Celery, Redis and Docker.
 
-Проект по созданю инфраструктуры для парсинга на основе Django, Celery, Redis и Docker.
+Проект по созданию инфраструктуры для парсинга на основе Django, Celery, Redis и Docker.
+
 По материалам статьи https://habr.com/ru/post/662928/
+
 Сайт для парсинга https://books.toscrape.com/
 
 ### Технологии
@@ -30,27 +32,31 @@ python -m venv venv
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
+
 Создать файл .env в корне, пример есть в .env_example
 
-Запускаем приложение
+Запускаем сборку контейнера всего приложения
 
+```
 docker-compose up --build -d
+```
 
-Далее зайдем в докер-контейнер и создадим суперпользователя
+Далее зайдем в докер-контейнер и создадим суперпользователя. Нам нужен parsing_infrastructure-django-1
 
-docker ps # intended to find django container name --> code_django_1
->> 6f5db39cfa3b   code_django                   "sh -c ' python mana…"   47 seconds ago   Up 46 seconds                   8000/tcp                 code_django_1
+```
+docker ps # список запущенных контейнеров
+docker exec -ti parsing_infrastructure-django-1 bash # заходим в контейнер с django
+python manage.py createsuperuser # создаем админа
+python manage.py collectstatic # собираем статику
+exit # выходим из контейнера
+```
 
-docker exec -ti code_django_1 bash # go into the container
-python manage.py createsuperuser # create admin user in django
-python manage.py collectstatic # intended to load css and js files
-exit
+### Проверка работы
 
 
-Результат
-5 Использование приложения
-5.1 Запрос парсинга POST
+Запрос POST для создания задачи парсинга (запомните task_id или смотрите в админке)
 
+```
 # POST http://127.0.0.1:80/task
 {
     "type": "philosophy_7"
@@ -64,8 +70,11 @@ RESPONSE:
         "type": "philosophy_7"
     }
 }
-5.2 Посмотрим результат задачи
+```
 
+Запрос GET для просмотра результата задачи парсинга
+
+```
 # GET http://127.0.0.1:80/task
 {
     "task_id": "062ac81f-dafe-4e2c-95e9-c042936e85f3"
@@ -77,6 +86,7 @@ RESPONSE:
     "task_status": "SUCCESS",
     "task_result": true
 }
+```
 
 ### Автор
 Валентин
