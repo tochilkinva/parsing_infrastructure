@@ -57,7 +57,10 @@ services:
 
   redis:
     image: redis:5-alpine
+    volumes:
+      - redis_data:/redis
 
 volumes:
     pg_data:
+    redis_data:
     static:
