@@ -19,20 +19,6 @@ git clone https://github.com/tochilkinva/parsing_infrastructure.git
 cd parsing_infrastructure
 ```
 
-Cоздать и активировать виртуальное окружение:
-
-```
-python -m venv venv
-. env/Scripts/activate
-```
-
-Установить зависимости из файла requirements.txt:
-
-```
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-```
-
 Создать файл .env в корне, пример есть в .env_example
 
 Запускаем сборку контейнера всего приложения
@@ -41,7 +27,7 @@ pip install -r requirements.txt
 docker-compose up --build -d
 ```
 
-Далее зайдем в докер-контейнер и создадим суперпользователя. Нам нужен parsing_infrastructure-django-1
+Необязательно. Зайдем в докер-контейнер и создадим суперпользователя. Нам нужен parsing_infrastructure-django-1
 
 ```
 docker ps # список запущенных контейнеров
